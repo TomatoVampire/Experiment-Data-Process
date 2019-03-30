@@ -44,7 +44,7 @@ int main(){
 
 
 	cout<<"………………数据处理中………………"<<endl;
-	double unitA,unitB,unitU;
+	double unitA,unitB,unitU;//三个不确定度的精度… 
 	dataProcess(s,s1,num,change);
 	double av=getAverage(s1,num,prec);
 	double d2=get2Deviation(s1,num,av);
@@ -56,8 +56,10 @@ int main(){
 	double ur=get_ur(av,u);
 	
 	cout<<"………………结果输出………………"<<endl;
-	cout<<"数据平均值：average= "<<av<<" "<<unit<<endl;
+	cout.setf(ios::fixed);
+	cout<<"数据平均值：average= "<<fixed<< setprecision(prec)<<av<<" "<<unit<<endl;
 	cout<<"数据表示："<<endl<<"{ X="<<av<<" ± ";
+	cout.unsetf(ios::fixed);
 	
 	cout.setf(ios::fixed);
 	cout<<fixed<< setprecision(unitU) <<u<<" "<<unit<<endl;
