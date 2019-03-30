@@ -1,90 +1,103 @@
 #include<iostream>
 #include<cmath>
+#include <iomanip>
 using namespace std;
-double getValid(double so,double prec);//²»È·¶¨¶ÈÎªprec 
-double getUnPrec(double so);//²»È·¶¨¶ÈµÄÓĞĞ§Êı×Ö £¬Ö»ÊÇÊı¾İ´¦Àí¹æÔò 
+double getValid(double so,double prec);//ä¸ç¡®å®šåº¦ä¸ºprec 
+double getUnPrec(double so,double &units);//ä¸ç¡®å®šåº¦çš„æœ‰æ•ˆæ•°å­— ï¼Œåªæ˜¯æ•°æ®å¤„ç†è§„åˆ™ 
 double get2Deviation(double s1[],double num,double av);
 double getStdDeviation(double s1[],double num,double d2,double prec);
 double get_tp(double num);
-double get_uA(double num,double d,double prec);
-double get_uB(double insChange,double prec);
-double get_u(double uA,double uB,double tp,double prec);
+double get_uA(double num,double d,double prec,double &unitA);
+double get_uB(double insChange,double prec,double &unitB);
+double get_u(double uA,double uB,double tp,double prec,double &unitU);
 double getAverage(double s1[],double num,double prec);
 double get_ur(double av,double u);
 void dataProcess(double s[],double s1[],double num,double change);
 void getData(double s[],double num);
 
 int main(){
-	double num;//Êı¾İ¸öÊı 
-	double s[40];//Êı¾İ¾ßÌåÄÚÈİ 
-	double s1[40];//´¦ÀíºóµÄÊı¾İÄÚÈİ! 
-	double change,insChange;//ÁãµãÎó²î£¬ÒÇÆ÷Îó²î 
-	double tp;//0.683µÄÖÃĞÅ¸ÅÂÊÏÂµÄtpÒò×Ó µÄ´óĞ¡ 
-	char unit[10];//µ¥Î» ÊÇ×Ö·û´®£¡ 
-	double prec;//ÓĞĞ§Êı×ÖÎ»Êı 
+	double num;//æ•°æ®ä¸ªæ•° 
+	double s[40];//æ•°æ®å…·ä½“å†…å®¹ 
+	double s1[40];//å¤„ç†åçš„æ•°æ®å†…å®¹! 
+	double change,insChange;//é›¶ç‚¹è¯¯å·®ï¼Œä»ªå™¨è¯¯å·® 
+	double tp;//0.683çš„ç½®ä¿¡æ¦‚ç‡ä¸‹çš„tpå› å­ çš„å¤§å° 
+	char unit[10];//å•ä½ æ˜¯å­—ç¬¦ä¸²ï¼ 
+	double prec;//æœ‰æ•ˆæ•°å­—ä½æ•° 
 	
-	//Êı¾İÊäÈë½×¶Î 
-	cout<<"´ËÎª¶ÔÓÚÖ±½Ó²âÁ¿Êı¾İµÄÊı¾İ´¦Àí by TomatoLin"<<endl<<endl;
-	cout<<"ÊäÈëÄÚÈİÒ»ÀÀ£º"<<endl;
-	cout<<"Êı¾İ¸öÊı Êı¾İÄÚÈİ ÓĞĞ§Êı×ÖÎ»Êı ÒÇÆ÷Îó²î µ¥Î» ÁãµãÎó²î"<<endl;
-	cout<<"¡­¡­¡­¡­¡­¡­¿ªÊ¼ÊäÈëÊı¾İ¡­¡­¡­¡­¡­¡­"<<endl;
-	cout<<"ÊäÈëÊı¾İ¸öÊı£º£¨²»¶àÓÚ40£©"<<endl;
+	//æ•°æ®è¾“å…¥é˜¶æ®µ 
+	cout<<"æ­¤ä¸ºå¯¹äºç›´æ¥æµ‹é‡æ•°æ®çš„æ•°æ®å¤„ç† by TomatoLin"<<endl<<endl;
+	cout<<"è¾“å…¥å†…å®¹ä¸€è§ˆï¼š"<<endl;
+	cout<<"æ•°æ®ä¸ªæ•° æ•°æ®å†…å®¹ æœ‰æ•ˆæ•°å­—ä½æ•° ä»ªå™¨è¯¯å·® å•ä½ é›¶ç‚¹è¯¯å·®"<<endl;
+	cout<<"â€¦â€¦â€¦â€¦â€¦â€¦å¼€å§‹è¾“å…¥æ•°æ®â€¦â€¦â€¦â€¦â€¦â€¦"<<endl;
+	cout<<"è¾“å…¥æ•°æ®ä¸ªæ•°ï¼šï¼ˆä¸å¤šäº40ï¼‰"<<endl;
 	cin>>num;
-	cout<<"ÊäÈëÊı¾İ£¨ÒÔ¿Õ¸ñ·Ö¸ô£©£º" <<endl;
+	cout<<"è¾“å…¥æ•°æ®ï¼ˆä»¥ç©ºæ ¼åˆ†éš”ï¼‰ï¼š" <<endl;
     getData(s,num);
-    cout<<"ÊäÈëÓĞĞ§Êı×ÖÎ»Êı: "<<endl;
+    cout<<"è¾“å…¥æœ‰æ•ˆæ•°å­—ä½æ•°: "<<endl;
     cin>>prec;
-    cout<<"ÊäÈëÒÇÆ÷Îó²î£º"<<endl;
+    cout<<"è¾“å…¥ä»ªå™¨è¯¯å·®ï¼š"<<endl;
 	cin>>insChange;
-    cout<<"ÊäÈëµ¥Î»£º"<<endl;
+    cout<<"è¾“å…¥å•ä½ï¼š"<<endl;
 	cin>>unit;
-	cout<<"ÊäÈëÁãµãÎó²î£º"<<endl;
+	cout<<"è¾“å…¥é›¶ç‚¹è¯¯å·®ï¼š"<<endl;
 	cin>>change;
 
 
-	cout<<"¡­¡­¡­¡­¡­¡­Êı¾İ´¦ÀíÖĞ¡­¡­¡­¡­¡­¡­"<<endl;
+	cout<<"â€¦â€¦â€¦â€¦â€¦â€¦æ•°æ®å¤„ç†ä¸­â€¦â€¦â€¦â€¦â€¦â€¦"<<endl;
+	double unitA,unitB,unitU;
 	dataProcess(s,s1,num,change);
 	double av=getAverage(s1,num,prec);
 	double d2=get2Deviation(s1,num,av);
 	double d=getStdDeviation(s1,num,d2,prec);
-	double uA=get_uA(num,d,prec);
-	double uB=get_uB(insChange,prec);
+	double uA=get_uA(num,d,prec, unitA);
+	double uB=get_uB(insChange,prec, unitB);
 	tp=get_tp(num);
-	double u=get_u(uA,uB,tp,prec);
+	double u=get_u(uA,uB,tp,prec,unitU);
 	double ur=get_ur(av,u);
 	
-	cout<<"¡­¡­¡­¡­¡­¡­½á¹ûÊä³ö¡­¡­¡­¡­¡­¡­"<<endl;
-	cout<<"Êı¾İÆ½¾ùÖµ£ºaverage= "<<av<<" "<<unit<<endl;
-	cout<<"Êı¾İ±íÊ¾£º"<<endl<<"{ X="<<av<<" +- "<<u<<" "<<unit<<endl;
+	cout<<"â€¦â€¦â€¦â€¦â€¦â€¦ç»“æœè¾“å‡ºâ€¦â€¦â€¦â€¦â€¦â€¦"<<endl;
+	cout<<"æ•°æ®å¹³å‡å€¼ï¼šaverage= "<<av<<" "<<unit<<endl;
+	cout<<"æ•°æ®è¡¨ç¤ºï¼š"<<endl<<"{ X="<<av<<" Â± ";
+	
+	cout.setf(ios::fixed);
+	cout<<fixed<< setprecision(unitU) <<u<<" "<<unit<<endl;
+	cout.unsetf(ios::fixed);
+	
 	cout<<"{ P=0.683"<<endl;
 	cout<<"{ ur="<<ur<<"%"<<endl;
-	cout<<"AÀà²»È·¶¨¶È uA="<<uA<<endl;
-	cout<<"BÀà²»È·¶¨¶È uB="<<uB<<endl;
-	cout<<"tpÒò×Ó tp="<<tp<<endl;
-	cout<<"·½²î ="<<d2<<endl;
-	cout<<"±ê×¼²î ="<<d<<endl;
-	cout<<"¡­¡­¡­¡­¡­¡­½áÊø¡­¡­¡­¡­¡­¡­"<<endl;
-	cout<<"°´0ÍË³ö£¬»òÕßÓÒÉÏ½ÇX¹Ø±Õ"<<endl;
+	
+	cout.setf(ios::fixed);
+	cout<<"Aç±»ä¸ç¡®å®šåº¦ uA="<<fixed<< setprecision(unitA) <<uA<<endl;
+	cout.unsetf(ios::fixed);
+	
+	cout.setf(ios::fixed);
+	cout<<"Bç±»ä¸ç¡®å®šåº¦ uB="<<fixed<< setprecision(unitB)<<uB<<endl;
+	cout.unsetf(ios::fixed);
+	
+	cout<<"tpå› å­ tp="<<tp<<endl;
+	cout<<"æ–¹å·® ="<<d2<<endl;
+	cout<<"æ ‡å‡†å·® ="<<d<<endl;
+	cout<<"â€¦â€¦â€¦â€¦â€¦â€¦ç»“æŸâ€¦â€¦â€¦â€¦â€¦â€¦"<<endl;
+	cout<<"æŒ‰0é€€å‡ºï¼Œæˆ–è€…å³ä¸Šè§’Xå…³é—­"<<endl;
 	
 	char stoop;
 	do{
-
 		cin>>stoop;
 	}while(stoop!='0');
 	//system("pause");
 }
 
 double getValid(double so,double prec){
-//ÔİÊ±ÎªprecÎ» 
-    double s1,ss;//s1¾ø¶ÔÖµ£¬ss×îÖÕ½á¹û 
+//æš‚æ—¶ä¸ºprecä½ 
+    double s1,ss;//s1ç»å¯¹å€¼ï¼Œssæœ€ç»ˆç»“æœ 
     s1=so;
     
-	double ten_more=pow(10.000f,prec);//ÓĞĞ§Êı×ÖÎ»Êı 
-	if(floor(s1)==s1) ss=s1;//¸ù±¾Ã»ÓĞĞ¡Êı 
-    else if(s1>1){//´óÓÚ1 
-    	ss=floor(s1 * ten_more + 0.5) / ten_more;//Ê¹ÓÃfloorÏòÏÂÈ¡ÕûÈ»ºóÉ§²Ù×÷È¡precÎ»Ğ¡Êı 
+	double ten_more=pow(10.000f,prec);//æœ‰æ•ˆæ•°å­—ä½æ•° 
+	if(floor(s1)==s1) ss=s1;//æ ¹æœ¬æ²¡æœ‰å°æ•° 
+    else if(s1>1){//å¤§äº1 
+    	ss=floor(s1 * ten_more + 0.5) / ten_more;//ä½¿ç”¨floorå‘ä¸‹å–æ•´ç„¶åéªšæ“ä½œå–precä½å°æ•° 
 	} 
-	else if(s1<1){//Ğ¡ÓÚ1 
+	else if(s1<1){//å°äº1 
 		double s=s1;
 		double flag=0;
 		double i=1;
@@ -94,26 +107,25 @@ double getValid(double so,double prec){
 			if(flag==0) i=i+1;
 		}while(flag==0);
 		double tens=pow(10.0,i+1);
-		ss=floor(s1*tens);
-		if((ss/tens)<s1) ss=ss+1;
+		ss=floor(s1*tens+0.5);//å››èˆäº”å…¥ 
+		//if((ss/tens)<s1) ss=ss+1;
 		ss=ss/tens;
 	} 
 	return ss;
 }
 
-double getUnPrec(double so){
-	double s1,ss;//²¢Ã»ÓĞ¾ø¶ÔÖµemm 
+double getUnPrec(double so,double &units){
+	double s1,ss;//å¹¶æ²¡æœ‰ç»å¯¹å€¼emm 
     s1=so;
- 
-	if(floor(s1)==s1) ss=s1;//¸ù±¾Ã»ÓĞĞ¡Êı 
-    else if(s1>=1){//´óÓÚ1 
-
-    	ss=floor(s1 * 100.000f + 0.5) / 100.000f;//Ê¹ÓÃfloorÏòÏÂÈ¡ÕûÈ»ºóÉ§²Ù×÷È¡Á½Î»Ğ¡Êı 
+    double i=1;
+	if(floor(s1)==s1) ss=s1;//æ ¹æœ¬æ²¡æœ‰å°æ•° 
+    else if(s1>=1){//å¤§äº1 
+    	ss=floor(s1 * 100.000f + 0.5) / 100.000f;//ä½¿ç”¨floorå‘ä¸‹å–æ•´ç„¶åéªšæ“ä½œå–ä¸¤ä½å°æ•° 
 	}
-	else if(s1<1){//Ğ¡ÓÚ1 
+	else if(s1<1){//å°äº1 
 		double s=s1;
 		double flag=0;
-		double i=1;
+		i=1;
 		do{
 			s=s*10.000f;
 			flag=floor(s);
@@ -121,9 +133,10 @@ double getUnPrec(double so){
 		}while(flag==0);
 		double tens=pow(10.0,i+1);
 		ss=floor(s1*tens);
-		if((ss/tens)<s1) ss=ss+1;
+		if((ss/tens)<s1) ss=ss+1;//ä¸å››èˆäº”å…¥ï¼Œå…¨éƒ½è¿›ä½ï¼›å¦‚æœåé¢éƒ½æ˜¯0å°±ä¸éœ€è¦ 
 		ss=ss/tens;
 	} 
+	units=i+1;
 	return ss;
 } 
  
@@ -189,30 +202,30 @@ double get_tp(double num){
 	return tp;
 }
 
-double get_uA(double num,double d,double prec){//!
+double get_uA(double num,double d,double prec,double &unitA){//!
 	double n1=sqrt(num);
 	double uA=d/n1;
-	uA=getUnPrec(uA);
+	uA=getUnPrec(uA,unitA);
 	return uA;
 }
 
-double get_uB(double insChange,double prec){//!
+double get_uB(double insChange,double prec,double &unitB){//!
 	double uB;
-	uB=insChange/sqrt(3);
-	uB=getUnPrec(uB);
+	uB=insChange/sqrt(3.00f);
+	uB=getUnPrec(uB,unitB);
 	return uB;
 }
 
-double get_u(double uA,double uB,double tp,double prec){//!
+double get_u(double uA,double uB,double tp,double prec,double &unit){//!
 	double u;
 	u=sqrt(tp*tp*uA*uA+uB*uB);
-	u=getUnPrec(u);
+	u=getUnPrec(u,unit);
 	return u;
 }
 
 double get_ur(double av,double u){
 	double ur;
 	ur=u/av;
-	ur=ur*100;
+	ur=ur*100.00f;
 	return ur;
 }
