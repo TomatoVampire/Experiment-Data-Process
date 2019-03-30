@@ -74,6 +74,10 @@ int main(){
 	cout<<"B类不确定度 uB="<<fixed<< setprecision(unitB)<<uB<<endl;
 	cout.unsetf(ios::fixed);
 	
+	cout.setf(ios::fixed);
+	cout<<"合成不确定度 u="<<fixed<< setprecision(unitU)<<u<<endl;
+	cout.unsetf(ios::fixed);
+	
 	cout<<"tp因子 tp="<<tp<<endl;
 	cout<<"方差 ="<<d2<<endl;
 	cout<<"标准差 ="<<d<<endl;
