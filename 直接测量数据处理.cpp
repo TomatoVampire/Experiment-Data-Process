@@ -2,8 +2,8 @@
 #include<cmath>
 #include <iomanip>
 using namespace std;
-double getValid(double so,double prec);//不确定度为prec 
-double getUnPrec(double so,double &units);//不确定度的有效数字 ，只是数据处理规则 
+double getValid(double so,double prec);//²»È·¶¨¶ÈÎªprec 
+double getUnPrec(double so,double &units);//²»È·¶¨¶ÈµÄÓÐÐ§Êý×Ö £¬Ö»ÊÇÊý¾Ý´¦Àí¹æÔò 
 double get2Deviation(double s1[],double num,double av);
 double getStdDeviation(double s1[],double num,double d2,double prec);
 double get_tp(double num);
@@ -16,35 +16,35 @@ void dataProcess(double s[],double s1[],double num,double change);
 void getData(double s[],double num);
 
 int main(){
-	double num;//数据个数 
-	double s[40];//数据具体内容 
-	double s1[40];//处理后的数据内容! 
-	double change,insChange;//零点误差，仪器误差 
-	double tp;//0.683的置信概率下的tp因子 的大小 
-	char unit[10];//单位 是字符串！ 
-	double prec;//有效数字位数 
+	double num;//Êý¾Ý¸öÊý 
+	double s[40];//Êý¾Ý¾ßÌåÄÚÈÝ 
+	double s1[40];//´¦ÀíºóµÄÊý¾ÝÄÚÈÝ! 
+	double change,insChange;//ÁãµãÎó²î£¬ÒÇÆ÷Îó²î 
+	double tp;//0.683µÄÖÃÐÅ¸ÅÂÊÏÂµÄtpÒò×Ó µÄ´óÐ¡ 
+	char unit[10];//µ¥Î» ÊÇ×Ö·û´®£¡ 
+	double prec;//ÓÐÐ§Êý×ÖÎ»Êý 
 	
-	//数据输入阶段 
-	cout<<"此为对于直接测量数据的数据处理 by TomatoLin"<<endl<<endl;
-	cout<<"输入内容一览："<<endl;
-	cout<<"数据个数 数据内容 有效数字位数 仪器误差 单位 零点误差"<<endl;
-	cout<<"………………开始输入数据………………"<<endl;
-	cout<<"输入数据个数：（不多于40）"<<endl;
+	//Êý¾ÝÊäÈë½×¶Î 
+	cout<<"´ËÎª¶ÔÓÚÖ±½Ó²âÁ¿Êý¾ÝµÄÊý¾Ý´¦Àí by TomatoLin"<<endl<<endl;
+	cout<<"ÊäÈëÄÚÈÝÒ»ÀÀ£º"<<endl;
+	cout<<"Êý¾Ý¸öÊý Êý¾ÝÄÚÈÝ ÓÐÐ§Êý×ÖÎ»Êý ÒÇÆ÷Îó²î µ¥Î» ÁãµãÎó²î"<<endl;
+	cout<<"¡­¡­¡­¡­¡­¡­¿ªÊ¼ÊäÈëÊý¾Ý¡­¡­¡­¡­¡­¡­"<<endl;
+	cout<<"ÊäÈëÊý¾Ý¸öÊý£º£¨²»¶àÓÚ40£©"<<endl;
 	cin>>num;
-	cout<<"输入数据（以空格分隔）：" <<endl;
+	cout<<"ÊäÈëÊý¾Ý£¨ÒÔ¿Õ¸ñ·Ö¸ô£©£º" <<endl;
     getData(s,num);
-    cout<<"输入有效数字位数: "<<endl;
+    cout<<"ÊäÈëÓÐÐ§Êý×ÖÎ»Êý: "<<endl;
     cin>>prec;
-    cout<<"输入仪器误差："<<endl;
+    cout<<"ÊäÈëÒÇÆ÷Îó²î£º"<<endl;
 	cin>>insChange;
-    cout<<"输入单位："<<endl;
+    cout<<"ÊäÈëµ¥Î»£º"<<endl;
 	cin>>unit;
-	cout<<"输入零点误差："<<endl;
+	cout<<"ÊäÈëÁãµãÎó²î£º"<<endl;
 	cin>>change;
 
 
-	cout<<"………………数据处理中………………"<<endl;
-	double unitA,unitB,unitU;//三个不确定度的精度… 
+	cout<<"¡­¡­¡­¡­¡­¡­Êý¾Ý´¦ÀíÖÐ¡­¡­¡­¡­¡­¡­"<<endl;
+	double unitA,unitB,unitU;//Èý¸ö²»È·¶¨¶ÈµÄ¾«¶È¡­ 
 	dataProcess(s,s1,num,change);
 	double av=getAverage(s1,num,prec);
 	double d2=get2Deviation(s1,num,av);
@@ -55,10 +55,11 @@ int main(){
 	double u=get_u(uA,uB,tp,prec,unitU);
 	double ur=get_ur(av,u);
 	
-	cout<<"………………结果输出………………"<<endl;
+	cout<<"¡­¡­¡­¡­¡­¡­½á¹ûÊä³ö¡­¡­¡­¡­¡­¡­"<<endl;
+	//cout<<"av= "<<av<<endl;//test
 	cout.setf(ios::fixed);
-	cout<<"数据平均值：average= "<<fixed<< setprecision(prec)<<av<<" "<<unit<<endl;
-	cout<<"数据表示："<<endl<<"{ X="<<av<<" ± ";
+	cout<<"Êý¾ÝÆ½¾ùÖµ£ºaverage= "<<fixed<< setprecision(prec+1)<<av<<" "<<unit<<endl;
+	cout<<"Êý¾Ý±íÊ¾£º"<<endl<<"{ X="<<av<<" ¡À ";
 	cout.unsetf(ios::fixed);
 	
 	cout.setf(ios::fixed);
@@ -69,22 +70,22 @@ int main(){
 	cout<<"{ ur="<<ur<<"%"<<endl;
 	
 	cout.setf(ios::fixed);
-	cout<<"A类不确定度 uA="<<fixed<< setprecision(unitA) <<uA<<' '<<unit<<endl;
+	cout<<"AÀà²»È·¶¨¶È uA="<<fixed<< setprecision(unitA) <<uA<<' '<<unit<<endl;
 	cout.unsetf(ios::fixed);
 	
 	cout.setf(ios::fixed);
-	cout<<"B类不确定度 uB="<<fixed<< setprecision(unitB)<<uB<<' '<<unit<<endl;
+	cout<<"BÀà²»È·¶¨¶È uB="<<fixed<< setprecision(unitB)<<uB<<' '<<unit<<endl;
 	cout.unsetf(ios::fixed);
 	
 	cout.setf(ios::fixed);
-	cout<<"合成不确定度 u="<<fixed<< setprecision(unitU)<<u<<' '<<unit<<endl;
+	cout<<"ºÏ³É²»È·¶¨¶È u="<<fixed<< setprecision(unitU)<<u<<' '<<unit<<endl;
 	cout.unsetf(ios::fixed);
 	
-	cout<<"tp因子 tp="<<tp<<endl;
-	cout<<"方差 ="<<d2<<endl;
-	cout<<"标准差 ="<<d<<endl;
-	cout<<"………………结束………………"<<endl;
-	cout<<"按0退出，或者右上角X关闭"<<endl;
+	cout<<"tpÒò×Ó tp="<<tp<<endl;
+	cout<<"·½²î ="<<d2<<endl;
+	cout<<"±ê×¼²î ="<<d<<endl;
+	cout<<"¡­¡­¡­¡­¡­¡­½áÊø¡­¡­¡­¡­¡­¡­"<<endl;
+	cout<<"°´0ÍË³ö£¬»òÕßÓÒÉÏ½ÇX¹Ø±Õ"<<endl;
 	
 	char stoop;
 	do{
@@ -94,16 +95,16 @@ int main(){
 }
 
 double getValid(double so,double prec){
-//暂时为prec位 
-    double s1,ss;//s1绝对值，ss最终结果 
+//ÔÝÊ±ÎªprecÎ» 
+    double s1,ss;//s1¾ø¶ÔÖµ£¬ss×îÖÕ½á¹û 
     s1=so;
     
-	double ten_more=pow(10.000f,prec);//有效数字位数 
-	if(floor(s1)==s1) ss=s1;//根本没有小数 
-    else if(s1>1){//大于1 
-    	ss=floor(s1 * ten_more + 0.5) / ten_more;//使用floor向下取整然后骚操作取prec位小数 
+	double ten_more=pow(10.000f,prec);//ÓÐÐ§Êý×ÖÎ»Êý 
+	if(floor(s1)==s1) ss=s1;//¸ù±¾Ã»ÓÐÐ¡Êý 
+    else if(s1>1){//´óÓÚ1 
+    	ss=floor(s1 * ten_more + 0.5) / ten_more;//Ê¹ÓÃfloorÏòÏÂÈ¡ÕûÈ»ºóÉ§²Ù×÷È¡precÎ»Ð¡Êý 
 	} 
-	else if(s1<1){//小于1 
+	else if(s1<1){//Ð¡ÓÚ1 
 		double s=s1;
 		double flag=0;
 		double i=1;
@@ -113,7 +114,7 @@ double getValid(double so,double prec){
 			if(flag==0) i=i+1;
 		}while(flag==0);
 		double tens=pow(10.0,i+1);
-		ss=floor(s1*tens+0.5);//四舍五入 
+		ss=floor(s1*tens+0.5);//ËÄÉáÎåÈë 
 		//if((ss/tens)<s1) ss=ss+1;
 		ss=ss/tens;
 	} 
@@ -121,14 +122,14 @@ double getValid(double so,double prec){
 }
 
 double getUnPrec(double so,double &units){
-	double s1,ss;//并没有绝对值emm 
+	double s1,ss;//²¢Ã»ÓÐ¾ø¶ÔÖµemm 
     s1=so;
     double i=1;
-	if(floor(s1)==s1) ss=s1;//根本没有小数 
-    else if(s1>=1){//大于1 
-    	ss=floor(s1 * 100.000f + 0.5) / 100.000f;//使用floor向下取整然后骚操作取两位小数 
+	if(floor(s1)==s1) ss=s1;//¸ù±¾Ã»ÓÐÐ¡Êý 
+    else if(s1>=1){//´óÓÚ1 
+    	ss=floor(s1 * 100.000f + 0.5) / 100.000f;//Ê¹ÓÃfloorÏòÏÂÈ¡ÕûÈ»ºóÉ§²Ù×÷È¡Á½Î»Ð¡Êý 
 	}
-	else if(s1<1){//小于1 
+	else if(s1<1){//Ð¡ÓÚ1 
 		double s=s1;
 		double flag=0;
 		i=1;
@@ -139,7 +140,7 @@ double getUnPrec(double so,double &units){
 		}while(flag==0);
 		double tens=pow(10.0,i+1);
 		ss=floor(s1*tens);
-		if((ss/tens)<s1) ss=ss+1;//不四舍五入，全都进位；如果后面都是0就不需要 
+		if((ss/tens)<s1) ss=ss+1;//²»ËÄÉáÎåÈë£¬È«¶¼½øÎ»£»Èç¹ûºóÃæ¶¼ÊÇ0¾Í²»ÐèÒª 
 		ss=ss/tens;
 	} 
 	units=i+1;
@@ -167,7 +168,10 @@ double getAverage(double s[],double num,double prec){//!
 		sum+=s[i];
 	}
 	av=sum/num;
+	//cout<<av<<endl;//test
 	av=getValid(av,prec);
+	//av=getUnPrec(av,prec);//
+	cout<<av<<endl;//
 	return av;
 }
 
